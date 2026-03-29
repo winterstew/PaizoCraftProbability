@@ -32,6 +32,7 @@ parser.add_argument('-n', '--noFormula', action='store_true', help='craft withou
 parser.add_argument('-f', '--craftFormula', action='store_true', help='include the cost of reverse engineering a formula')
 parser.add_argument('-v', '--rollsPerLevel',type=int, default=3, help='number of downtime checks per levelup')
 parser.add_argument('-o', '--levelOffset',type=int, default=0, help='offset on the rolls per level check (closer to leveling up)')
+parser.add_argument('--out', default=None, help='output image filename for plot')
 args = parser.parse_args()
 
 path = args.path # Pathfinder if True, Starfinder if False
@@ -48,6 +49,7 @@ haveFormula = not args.noFormula # True if have the formula, False if not (still
 craftFormula = args.craftFormula # True if reverse enginneering the formula
 rollsPerLevel = args.rollsPerLevel # number of checks done before typical level up (3 for OPF)
 levelOffset = args.levelOffset # offset for current character level (i.e. already made X rolls/checks)
+outFile = args.out
 
 # prevent some logical incongrueties
 if craftFormula: haveFormula = True # You have it after you craft it
@@ -380,4 +382,7 @@ xticklabels[-2] += '+'
 ax.set_xticks(ax.get_xticks()[0:-1],xticklabels[0:-1])
 #low,high = ax.get_xlim()
 #ax.set_xlim(low,high-1)
-plt.show()
+if outFile: 
+    plt.savefig(outFile,bbox_inches='tight',pad_inches=0.1)
+else:
+    plt.show()
